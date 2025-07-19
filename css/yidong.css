@@ -82,7 +82,7 @@
 	}
 	/*每个选择框的宽度*/
 	.content li{
-		width: 4.69rem;
+		width: 200px;
 	}
 	/*放弃content外的footer*/
 	.footer{  
