@@ -1,0 +1,136 @@
+[
+  {
+    "title": "常用工具",
+    "links": [
+      {
+        "name": "百度",
+        "url": "https://www.baidu.com/"
+      },
+      {
+        "name": "百度翻译",
+        "url": "https://fanyi.baidu.com/mtpe-individual/multimodal?aldtype=16047&ext_channel=Aldtype#/auto/zh"
+      },
+      {
+        "name": "豆包",
+        "url": "https://www.doubao.com/chat"
+      },
+      {
+        "name": "腾讯元宝",
+        "url": "https://yuanbao.tencent.com/chat"
+      },
+      {
+        "name": "会议室预定",
+        "url": "https://eh.condecosoftware.com/master.aspx"
+      },
+      {
+        "name": "安酷",
+        "url": "http://online.safecoo.com/"
+      }
+    ]
+  },
+  {
+    "title": "Microsoft 365",
+    "links": [
+      {
+        "name": "Power BI",
+        "url": "https://app.powerbi.com"
+      },
+      {
+        "name": "Power Automate",
+        "url": "https://make.powerautomate.com"
+      },
+      {
+        "name": "Teams",
+        "url": "https://teams.microsoft.com"
+      },
+      {
+        "name": "Microsoft Forms",
+        "url": "https://forms.office.com"
+      },
+      {
+        "name": "Onedrive",
+        "url": "https://endresshauser-my.sharepoint.com/"
+      }
+    ]
+  },
+  {
+    "title": "Power BI DashBoard",
+    "links": [
+      {
+        "name": "Production DashBoard",
+        "url": "https://app.powerbi.com/reportEmbed?reportId=c957af72-1c79-4343-b5c1-b7f822530496&autoAuth=true&ctid=52daf2a9-3b73-4da4-ac6a-3f81adc92b7e"
+      },
+      {
+        "name": "Production DashBoard Backup",
+        "url": "https://app.powerbi.com/reportEmbed?reportId=16cdcbf2-8acb-4954-9d88-baae16c04ffc&autoAuth=true&ctid=52daf2a9-3b73-4da4-ac6a-3f81adc92b7e"
+      },
+      {
+        "name": "CIP Dashboard",
+        "url": "https://app.powerbi.com/reportEmbed?reportId=b8ceb28b-7dea-4737-a267-7391642680b0&autoAuth=true&ctid=52daf2a9-3b73-4da4-ac6a-3f81adc92b7e"
+      }
+    ]
+  },
+  {
+    "title": "SharePoint",
+    "links": [
+      {
+        "name": "E+H Power BI",
+        "url": "https://endresshauser.sharepoint.com/teams/wg0003590/SitePages/GroupOverview.aspx"
+      },
+      {
+        "name": "E+H Lean",
+        "url": "https://endresshauser.sharepoint.com/teams/wg0003098/SitePages/GroupOverview.aspx"
+      },
+      {
+        "name": "DS PSR",
+        "url": "https://endresshauser.sharepoint.com/teams/pg0001223/SitePages/GroupOverview.aspx"
+      },
+      {
+        "name": "DS Lean",
+        "url": "https://endresshauser.sharepoint.com/teams/wg0003787/SitePages/GroupOverview.aspx"
+      },
+      {
+        "name": "DSO",
+        "url": "https://endresshauser.sharepoint.com/teams/ou0000945/SitePages/GroupOverview.aspx"
+      },
+      {
+        "name": "DSO Publish",
+        "url": "https://endresshauser.sharepoint.com/teams/ou0001260/SitePages/GroupOverview.aspx"
+      },
+      {
+        "name": "DSO Lean",
+        "url": "https://endresshauser.sharepoint.com/teams/wg0003799/SitePages/GroupOverview.aspx"
+      },
+      {
+        "name": "DSO IE",
+        "url": "https://endresshauser.sharepoint.com/teams/wg0002483/SitePages/GroupOverview.aspx"
+      },
+      {
+        "name": "DSO IE Layout",
+        "url": "https://endresshauser.sharepoint.com/teams/wg0003767/SitePages/GroupOverview.aspx"
+      }
+    ]
+  },
+  {
+    "title": "List",
+    "links": [
+      {
+        "name": "CIP",
+        "url": "https://endresshauser.sharepoint.com/:l:/r/teams/ou0000945/Lists/CIP%20Request?e=gI8hkj"
+      },
+      {
+        "name": "Muda",
+        "url": "https://endresshauser.sharepoint.com/:l:/r/teams/ou0000945/Lists/Operation%20Muda%20Collection?e=rAlMHQ"
+      }
+    ]
+  },
+  {
+    "title": "Forms",
+    "links": [
+      {
+        "name": "Muda提交",
+        "url": "https://forms.office.com/Pages/ResponsePage.aspx?id=qfLaUnM7pE2saj-BrckrftLu5SqUC6lJpRS74TYytDJUMktXSkxQWDlZUllNWk1YREdNR09JVEszUi4u"
+      }
+    ]
+  }
+]

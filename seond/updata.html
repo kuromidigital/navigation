@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>导航数据管理</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .container { display: flex; gap: 20px; }
+        .form-section { flex: 1; background: #f5f5f5; padding: 20px; border-radius: 8px; }
+        .list-section { flex: 2; background: #f5f5f5; padding: 20px; border-radius: 8px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 8px 16px; background: #4285f4; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #3367d6; }
+        .category-card { background: white; padding: 15px; margin-bottom: 15px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .link-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #eee; }
+        .action-btn { margin-left: 5px; padding: 4px 8px; font-size: 12px; }
+        .delete-btn { background: #ea4335; }
+        .edit-btn { background: #fbbc05; }
+        .export-btn { margin-top: 20px; background: #34a853; }
+    </style>
+</head>
+<body>
+    <h1>导航数据管理</h1>
+    <div class="container">
+        <!-- 表单区域 -->
+        <div class="form-section">
+            <h2>添加/编辑分类</h2>
+            <div class="form-group">
+                <label for="categoryTitle">分类名称</label>
+                <input type="text" id="categoryTitle" placeholder="例如：常用工具">
+            </div>
+            <button id="addCategory">添加分类</button>
+
+            <h2 style="margin-top: 30px;">添加/编辑链接</h2>
+            <div class="form-group">
+                <label for="linkCategory">所属分类</label>
+                <select id="linkCategory"></select>
+            </div>
+            <div class="form-group">
+                <label for="linkName">链接名称</label>
+                <input type="text" id="linkName" placeholder="例如：百度">
+            </div>
+            <div class="form-group">
+                <label for="linkUrl">链接地址</label>
+                <input type="text" id="linkUrl" placeholder="例如：https://www.baidu.com">
+            </div>
+            <button id="addLink">添加链接</button>
+        </div>
+
+        <!-- 列表区域 -->
+        <div class="list-section">
+            <h2>现有数据</h2>
+            <div id="dataList"></div>
+            <button class="export-btn" id="exportJson">导出 JSON 文件</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script>
+        // 初始化数据（优先从localStorage读取，否则加载默认JSON）
+        let navData = JSON.parse(localStorage.getItem('navData')) || [];
+        let editingCategoryId = null; // 用于标记正在编辑的分类ID
+        let editingLinkId = null; // 用于标记正在编辑的链接ID
+
+        // 页面加载时初始化
+        $(function() {
+            loadNavData();
+            renderCategorySelect();
+            renderDataList();
+        });
+
+        // 从原JSON文件加载初始数据（仅首次加载时）
+        function loadNavData() {
+            if (navData.length === 0) {
+                $.getJSON('navData.json', function(data) {
+                    navData = data;
+                    localStorage.setItem('navData', JSON.stringify(navData));
+                    renderCategorySelect();
+                    renderDataList();
+                }).fail(function() {
+                    console.log('首次加载，使用空数据');
+                });
+            }
+        }
+
+        // 渲染分类下拉选择框
+        function renderCategorySelect() {
+            const $select = $('#linkCategory');
+            $select.empty();
+            navData.forEach((category, index) => {
+                $select.append(`<option value="${index}">${category.title}</option>`);
+            });
+        }
+
+        // 渲染数据列表
+        function renderDataList() {
+            const $list = $('#dataList');
+            $list.empty();
+
+            navData.forEach((category, catIndex) => {
+                const categoryCard = $(`
+                    <div class="category-card">
+                        <div class="category-header">
+                            <h3>${category.title}</h3>
+                            <div>
+                                <button class="edit-btn action-btn" data-index="${catIndex}">编辑分类</button>
+                                <button class="delete-btn action-btn" data-index="${catIndex}">删除分类</button>
+                            </div>
+                        </div>
+                        <div class="links-list"></div>
+                    </div>
+                `);
+
+                // 渲染链接列表
+                const $linksList = categoryCard.find('.links-list');
+                category.links.forEach((link, linkIndex) => {
+                    $linksList.append(`
+                        <div class="link-item">
+                            <div>
+                                <strong>${link.name}</strong> - ${link.url}
+                            </div>
+                            <div>
+                                <button class="edit-btn action-btn" data-cat="${catIndex}" data-link="${linkIndex}">编辑</button>
+                                <button class="delete-btn action-btn" data-cat="${catIndex}" data-link="${linkIndex}">删除</button>
+                            </div>
+                        </div>
+                    `);
+                });
+
+                $list.append(categoryCard);
+            });
+
+            // 绑定分类编辑/删除事件
+            $('.edit-btn[data-index]').click(function() {
+                const index = $(this).data('index');
+                $('#categoryTitle').val(navData[index].title);
+                editingCategoryId = index;
+                $('#addCategory').text('保存分类');
+            });
+
+            $('.delete-btn[data-index]').click(function() {
+                const index = $(this).data('index');
+                if (confirm(`确定要删除分类"${navData[index].title}"吗？`)) {
+                    navData.splice(index, 1);
+                    saveData();
+                }
+            });
+
+            // 绑定链接编辑/删除事件
+            $('.edit-btn[data-cat]').click(function() {
+                const catIndex = $(this).data('cat');
+                const linkIndex = $(this).data('link');
+                const link = navData[catIndex].links[linkIndex];
+                
+                $('#linkCategory').val(catIndex);
+                $('#linkName').val(link.name);
+                $('#linkUrl').val(link.url);
+                editingLinkId = { catIndex, linkIndex };
+                $('#addLink').text('保存链接');
+            });
+
+            $('.delete-btn[data-cat]').click(function() {
+                const catIndex = $(this).data('cat');
+                const linkIndex = $(this).data('link');
+                if (confirm(`确定要删除链接"${navData[catIndex].links[linkIndex].name}"吗？`)) {
+                    navData[catIndex].links.splice(linkIndex, 1);
+                    saveData();
+                }
+            });
+        }
+
+        // 保存数据到localStorage并重新渲染
+        function saveData() {
+            localStorage.setItem('navData', JSON.stringify(navData));
+            renderCategorySelect();
+            renderDataList();
+            // 重置编辑状态
+            editingCategoryId = null;
+            editingLinkId = null;
+            $('#addCategory').text('添加分类');
+            $('#addLink').text('添加链接');
+            $('input, select').val('');
+        }
+
+        // 添加/编辑分类
+        $('#addCategory').click(function() {
+            const title = $('#categoryTitle').val().trim();
+            if (!title) {
+                alert('请输入分类名称');
+                return;
+            }
+
+            if (editingCategoryId !== null) {
+                // 编辑现有分类
+                navData[editingCategoryId].title = title;
+            } else {
+                // 添加新分类
+                navData.push({ title, links: [] });
+            }
+            saveData();
+        });
+
+        // 添加/编辑链接
+        $('#addLink').click(function() {
+            const catIndex = $('#linkCategory').val();
+            const name = $('#linkName').val().trim();
+            const url = $('#linkUrl').val().trim();
+
+            if (!catIndex && catIndex !== 0) {
+                alert('请选择所属分类');
+                return;
+            }
+            if (!name) {
+                alert('请输入链接名称');
+                return;
+            }
+            if (!url) {
+                alert('请输入链接地址');
+                return;
+            }
+
+            if (editingLinkId) {
+                // 编辑现有链接
+                navData[editingLinkId.catIndex].links[editingLinkId.linkIndex] = { name, url };
+            } else {
+                // 添加新链接
+                navData[catIndex].links.push({ name, url });
+            }
+            saveData();
+        });
+
+        // 导出JSON文件
+        $('#exportJson').click(function() {
+            const jsonStr = JSON.stringify(navData, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'navData.json'; // 文件名与原文件一致
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
